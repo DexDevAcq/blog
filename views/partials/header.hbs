@@ -1,0 +1,14 @@
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">Logo here</a>
+        {{#if login}}
+            {{login}} | {{email}}
+            {{> _logout_partial}}
+        {{else}}
+           <div class="container">
+                <a href="/auth/login" class="btn btn-secondary login">Login</a>
+                <a href="/auth/register" class="btn btn-secondary">Register</a>
+           </div>
+        {{/if}}
+    </nav>
+</div>
