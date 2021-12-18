@@ -6,7 +6,7 @@ const hbs = require('hbs');
 const passport = require('passport');
 const flash = require('express-flash-messages');
 const session = require('express-session');
-const paginateHelper = require('express-handlebars-paginate');
+const paginateHelper = require('./express-handlebars-paginate');
 
 
 const initializePassport = require('./passport-config.js');
@@ -19,8 +19,6 @@ const app = express();
 const mainRouter = require('./router');
 
 const PORT  = 5000;
-const TWO_HOURS = 1000 * 60 * 60 * 2;
-const SESS_ID = 'sid';
 const SESS_SECRET = 'secret'; 
 
 
@@ -28,6 +26,9 @@ app.set('views', path.join(__dirname, 'views', 'pages'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 hbs.registerHelper('paginateHelper', paginateHelper.createPagination);
+hbs.registerHelper('shortDescription', function(text) {
+    return text.substring(0, 20) + '...'
+})
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

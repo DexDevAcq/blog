@@ -1,5 +1,4 @@
 const userModel = require('../models/User');
-const passport = require('passport');
 const {validationResult} = require('express-validator');
 
 
@@ -7,7 +6,10 @@ const {validationResult} = require('express-validator');
 
 class authController{
     getRegisterPage(req, res) {
-        res.render('register');
+        res.render('register', {showData: {
+            showLoginBtn: true,
+            showRegisterBtn: false
+        }});
     }
 
 
@@ -15,7 +17,6 @@ class authController{
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // return res.status(400).json({ errors: errors.array() });
             req.session.message = {
                 msg: JSON.stringify(errors.array()[0].msg)
             }
@@ -27,21 +28,21 @@ class authController{
 
 
     getLoginPage(req, res) {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //     // return res.status(400).json({ errors: errors.array() });
-        //     return res.render('login', {
-        //         error: JSON.stringify(errors.array()[0].msg)
-        //     });
-        // } 
         const flashMessages = res.locals.getMessages();
         if(flashMessages.error){
             res.render('login', {
                 showError: true,
-                errors: flashMessages.error
+                errors: flashMessages.error,
+                showData: {
+                    showLoginBtn: false,
+                    showRegisterBtn: true
+                }
             })
         } else {
-            res.render('login')
+            res.render('login', {showData: {
+                showLoginBtn: false,
+                showRegisterBtn: true
+            }})
         }
     }
 
@@ -50,7 +51,6 @@ class authController{
         const userData = req.body;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // return res.status(400).json({ errors: errors.array() });
             req.session.message = {
                 msg: JSON.stringify(errors.array()[0].msg)
             }

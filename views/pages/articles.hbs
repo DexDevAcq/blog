@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,4 +51,83 @@
         </div>
     </main>
 </body>
-</html>
+</html> --}}
+
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+        <title>Album example for Bootstrap</title>
+
+        <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
+
+        <!-- Bootstrap core CSS -->
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/styles/styles.css">
+    </head>
+
+  <body>
+
+      {{> header}}
+
+    <main role="main">
+        <div class="album py-5 bg-light">
+         <div class="container">
+                <div class="add-btn">
+                    {{#if login}}
+                        <a href="/articles/new" class="btn btn-success margin-bottom-xs">New article</a>
+                    {{/if}}
+                    {{#if allPosts}}
+                        <a href="/articles" class="btn btn-success">Return to posts</a>
+                    {{/if}}
+                </div>
+            <div class="row">
+                {{#each articles}}
+                      <div class="col-md-4">
+                                
+                                <div class="card mb-4 box-shadow">
+                                {{#if this.imgExists}}
+                                <img class="card-img-top" src="/images/{{this.id}}.jpg" alt="Card image cap">
+                                {{else}}
+                                <img class="card-img-top" src="/placeholder/basic.png" alt="Card image cap">
+                                {{/if}}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{this.title}}</h5>
+                                    <p class="card-text">{{shortDescription this.description }}</p>
+                                    <p> Author's name: <span class="name">{{this.authorName}}</span></p>
+                                     <div class="btn-group">
+                                      <div class="bts">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                <a href="/articles/{{this.id}}" class="card-link" style="color:black">See more</a>
+                                            </button>
+                                      </div>
+                                    </div>
+                                    <div class="tags">
+                                        {{#each tags}}
+                                            <span class="badge badge-info tag"><a href="/articles/filter/{{this}}"><span>#</span>{{this}}</a></span>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                {{/each}}
+            </div>
+        </div>
+      </div>
+
+    </main>
+    <div class="footer">
+        {{> footer}}
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="226" viewBox="0 0 288 226" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="14" style="font-weight:bold;font-size:14pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg></body></html>

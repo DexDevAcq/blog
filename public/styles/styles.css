@@ -28,6 +28,104 @@ ul.pag li a {
 }
 
 
-.login {
-    margin-left: 900px;
+.account-data {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logout-button {
+  margin: 10px;
+}
+
+
+.footer {
+    margin: 20px;
+}
+
+
+.col-md-6 span a {
+    text-decoration: none;
+    color: white;
+}
+
+.pag li a{
+    margin-left: 5px;
+}
+
+
+.add-btn {
+    margin: 0 0 10px;
+}
+
+.add-btn a {
+    margin:0 10px 10px 0; 
+}
+
+.tags {
+    display: grid;
+    grid:  auto auto auto auto/ auto auto auto auto ; 
+    grid-gap: 10px; 
+    margin: 10px 0;
+}
+
+.tags a{
+    box-sizing: border-box;
+    width:auto;
+     max-width:100%;
+    color: white;
+    text-decoration: none;
+    overflow-wrap: break-word;
+     word-wrap: break-word;
+    hyphens: auto;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.bts button a {
+    color: white;
+}
+
+
+input {
+    width: 100px;
+}
+
+
+.fullwrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.wrapper {
+   width: 500px;
+}
+
+
+.img-wrapper {
+    margin: 30px;
+}
+
+
+.img-wrapper img {
+    height: 300px;
+}
+
+.text-block  {
+    width: 750px;
+}
+.ow {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+
+.container h1 {
+    margin-top: 30px;
 }

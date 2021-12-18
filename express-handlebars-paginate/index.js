@@ -11,8 +11,6 @@ exports.createPagination = function (pagination, options) {
         , n;
     var queryParams='';
     var page = pagination.page;
-    var leftText = '<<';
-    var rightText = '>>'
     var paginationClass = 'pagination pagination-sm';
 
     if (options.hash.limit) limit = +options.hash.limit;
@@ -21,8 +19,8 @@ exports.createPagination = function (pagination, options) {
     if (options.hash.paginationClass) paginationClass = options.hash.paginationClass;
 
 
-    // var pageCount = Math.ceil(pagination.totalRows / pagination.limit);
-    var pageCount = 7;
+    var pageCount = Math.ceil(pagination.totalRows / pagination.limit);
+   
 
     //query params
     if(pagination.queryParams){
@@ -44,14 +42,7 @@ exports.createPagination = function (pagination, options) {
     var template = '<ul class="' + paginationClass + ' pag">';
 
     // ========= Previous Button ===============
-    if (page === 1) {
-        n = 1;
-        template = template + '<li class="disabled"><a href="?page=' + n + queryParams + '">'+ leftText +'</a></li>';
-    }
-    else {
-        n = page - 1;
-        template = template + '<li><a href="?page=' + n + queryParams + '">'+ leftText +'</a></li>';
-    }
+  
 
     // ========= Page Numbers Middle ======
 
@@ -79,14 +70,7 @@ exports.createPagination = function (pagination, options) {
     }
 
 // ========== Next Buton ===========
-    if (page === pageCount) {
-        n = pageCount;
-        template = template + '<li class="disabled"><a href="?page=' + n + queryParams + '">'+ rightText +'</i></a></li>';
-    }
-    else {
-        n = page + 1;
-        template = template + '<li><a href="?page=' + n + queryParams + '">'+ rightText +'</a></li>';
-    }
+
     template = template + '</ul>';
     return template;
 }

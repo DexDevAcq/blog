@@ -1,4 +1,4 @@
-<div class="container">
+{{!-- <div class="container">
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand">Logo here</a>
         {{#if login}}
@@ -11,4 +11,31 @@
            </div>
         {{/if}}
     </nav>
-</div>
+</div> --}}
+
+
+
+<header>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="/articles" class="navbar-brand d-flex align-items-center">
+            <strong>Logo</strong>
+          </a>
+        </div>
+        {{#if login}}
+           <div class="account-data">
+                {{login}} | {{email}}
+                {{> _logout_partial}}
+           </div>
+        {{else}}
+               <div class="justify-content-end">
+                    {{#if showData.showLoginBtn}}
+                      <a href="/auth/login" class="btn btn-secondary login">Login</a>
+                    {{/if}}
+                    {{#if showData.showRegisterBtn}}
+                      <a href="/auth/register" class="btn btn-secondary">Register</a>
+                    {{/if}}
+               </div>
+        {{/if}}
+      </div>
+</header>

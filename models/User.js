@@ -19,7 +19,6 @@ class UserModel {
         const data  = this.getAllData();
         const user = data.find((user) => user.id === id)
         if(user){
-            // console.log(post)
             return user
         } else {
             console.log('There is no such user')
@@ -29,8 +28,7 @@ class UserModel {
 
     findUserByEmail(email) {
         const data  = this.getAllData();
-        // console.log(data)
-        if(email) { // validation
+        if(email) { 
             const user = data.find(
                 user => user.email === email
             )
@@ -45,14 +43,11 @@ class UserModel {
     }
 
     async createNewOne(userData){
-        // console.log(data)
-        // console.log(this.getAllData())
         const {login, email, password} = userData;
 
         if(login && email && password) {
             const  data  = this.getAllData();
 
-            // flash msg about such user has been create
 
             const hashedPassword = await bcrypt.hash(password, 10)
 

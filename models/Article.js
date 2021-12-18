@@ -1,5 +1,4 @@
 const fs = require('fs');
-const {v4: uuidv4} = require('uuid');
 const DB_LINK_POSTS = `${__dirname}/../DB/articles.json`
 const userModal = require('./User');
 
@@ -24,7 +23,6 @@ class PostModel {
         const { data } = this.getAllData();
         const post = data.find((article) => article.id === id)
         if(post){
-            // console.log(post)
             return post
         } else {
             console.log('There is no such post')
@@ -35,7 +33,6 @@ class PostModel {
 
     createNewOne(articleData, file, user, uniqueID){
         const { data } = this.getAllData();
-        // console.log(this.getAllData())
         const currentUser = userModal.findById(user.id);
 
         const newArticle = {
@@ -52,7 +49,7 @@ class PostModel {
 
         const updatedArticles = JSON.stringify({data})
 
-        fs.writeFile(this.articlesLink, updatedArticles, (err, data) => {
+        fs.writeFile(this.articlesLink, updatedArticles, (err) => {
             if(err){
                 console.log(err)
             }
