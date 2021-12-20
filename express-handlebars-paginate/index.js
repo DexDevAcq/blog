@@ -57,9 +57,10 @@ exports.createPagination = function (pagination, options) {
     }
     var start = page - leftCount;
 
+
     while (i < limit && i < pageCount) {
         n = start;
-        if (start === page) {
+        if (start == page) {
             template = template + '<li class="active"><a href="?page=' + n + queryParams + '">' + n + '</a></li>';
         } else {
             template = template + '<li><a href="?page=' + n + queryParams + '">' + n + '</a></li>';
@@ -74,4 +75,3 @@ exports.createPagination = function (pagination, options) {
     template = template + '</ul>';
     return template;
 }
-;
