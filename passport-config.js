@@ -4,7 +4,7 @@ const userModel = require('./models/User.js');
 
 function initialize(passport) {
     const authenticateUser = async (email, password, done) => {
-        const user = userModel.findUserByEmail(email.toLowerCase());
+        const user = await userModel.findUserByEmail(email.toLowerCase());
         if (user == null){
             return done(null, false, {message: 'No user with that email'})
         }
@@ -21,9 +21,9 @@ function initialize(passport) {
     }
 
     passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser((id, done) => {
-        return done(null, userModel.findById(id))
+    passport.serializeUser((user, done) => done(null, user._id))
+    passport.deserializeUser(async (id, done) => {
+        return done(null, await userModel.findById(id))
     })
 }
 

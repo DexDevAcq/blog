@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-const {v4: uuidv4} = require('uuid');
 const DB_LINK_USERS = `${__dirname}/../DB/users.json`
+const userModel = require('./User_');
+const mongoose = require('mongoose');
 
 class UserModel {
 
@@ -9,15 +10,15 @@ class UserModel {
         this.usersLink = link;
     }
 
-    getAllData() {
-        const { data }= JSON.parse(fs.readFileSync(this.usersLink))
-        return data
+    async getAllData() {
+       const users = await userModel.find({})
+       return users
     }
 
 
-    findById(id){
-        const data  = this.getAllData();
-        const user = data.find((user) => user.id === id)
+    async findById(id){
+        // const data  = this.getAllData();
+        const user = await userModel.findById(id)
         if(user){
             return user
         } else {
@@ -26,19 +27,15 @@ class UserModel {
     }
 
 
-    findUserByEmail(email) {
-        const data  = this.getAllData();
-        if(email) { 
-            const user = data.find(
-                user => user.email === email
-            )
+    async findUserByEmail(email) {
+        // const data  = this.getAllData();
+            const user = await userModel.findOne({email})
 
             if(user){
                 return user
             } else {
                 console.log('There is no such user')
             }
-        }
 
     }
 
@@ -46,28 +43,19 @@ class UserModel {
         const {login, email, password} = userData;
 
         if(login && email && password) {
-            const  data  = this.getAllData();
-
 
             const hashedPassword = await bcrypt.hash(password, 10)
+            const uniqueID = new mongoose.Types.ObjectId()
 
-            const newUser = {
-                id: uuidv4(),
+            const User = new userModel({
+                _id: uniqueID,
                 login,
                 email: email.toLowerCase(),
                 password: hashedPassword
-            }
-            
-            data.push(newUser)
-    
-            const updatedUsers = JSON.stringify({data})
-    
-            fs.writeFile(this.usersLink, updatedUsers, (err, data) => {
-                if(err){
-                    console.log(err)
-                }
-                console.log('Written successfully');
             })
+    
+
+            const newUser = await User.save();
 
             return newUser
         }

@@ -47,22 +47,26 @@ class authController{
     }
 
 
-    createNewUser(req, res) {
-        const userData = req.body;
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            req.session.message = {
-                msg: JSON.stringify(errors.array()[0].msg)
+    async createNewUser(req, res) {
+       try {
+            const userData = req.body;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                req.session.message = {
+                    msg: JSON.stringify(errors.array()[0].msg)
+                }
+                return res.redirect('/auth/register')
             }
-            return res.redirect('/auth/register')
-        }
-        const user = userModel.createNewOne(userData);
+            const user = await userModel.createNewOne(userData);
 
-        if(user){
-            res.redirect('/auth/login')
-        } else {
-            res.redirect('/auth/register')
-        }
+            if(user){
+                res.redirect('/auth/login')
+            } else {
+                res.redirect('/auth/register')
+            }
+       } catch (error) {
+           console.log(error)
+       }
     }
 
     LogOut(req, res) {

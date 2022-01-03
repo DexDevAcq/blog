@@ -7,6 +7,7 @@ const passport = require('passport');
 const flash = require('express-flash-messages');
 const session = require('express-session');
 const paginateHelper = require('./express-handlebars-paginate');
+const mongoose = require('mongoose');
 
 
 const initializePassport = require('./passport-config.js');
@@ -20,6 +21,7 @@ const mainRouter = require('./router');
 
 const PORT  = 5000;
 const SESS_SECRET = 'secret'; 
+const DB_URL = 'mongodb://localhost:27017/blog'
 
 
 app.set('views', path.join(__dirname, 'views', 'pages'));
@@ -28,6 +30,15 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 hbs.registerHelper('paginateHelper', paginateHelper.createPagination);
 hbs.registerHelper('shortDescription', function(text) {
     return text.substring(0, 20) + '...'
+})
+hbs.registerHelper('currentDate', function(time){
+    const date = new Date(time)
+    let monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Aug', 'Oct', 'Nov', 'Dec'];
+    let daysList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let month = monthsList[date.getMonth()];
+    let day = daysList[date.getDay()];
+
+    return `${date.getDate()} ${month}, ${day}`
 })
 
 app.use(express.json());
@@ -57,12 +68,17 @@ app.use(flash());
 
 app.use('/', mainRouter)
 
-function startApp(app) {
+async function startApp(app) {
     try {
         
+
         app.listen(PORT, () => {
             console.log(`Server has started on port ${PORT}`)
         })
+        await mongoose.connect(DB_URL, (err, databases) => {
+            console.log('connected ot db');
+        })
+
 
     } catch (e) {
         console.log(e)
