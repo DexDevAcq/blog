@@ -68,17 +68,17 @@ app.use(flash());
 
 app.use('/', mainRouter)
 
-async function startApp(app) {
+function startApp(app) {
     try {
         
+
+        mongoose.connect(DB_URL, (err) => {
+            console.log('connected ot db');
+        })
 
         app.listen(PORT, () => {
             console.log(`Server has started on port ${PORT}`)
         })
-        await mongoose.connect(DB_URL, (err, databases) => {
-            console.log('connected ot db');
-        })
-
 
     } catch (e) {
         console.log(e)
