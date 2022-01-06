@@ -1,7 +1,8 @@
-const userModel = require('../models/User');
 const {validationResult} = require('express-validator');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
-
+const {userModel} = require('../models/User_')
 
 
 class authController{
@@ -49,22 +50,37 @@ class authController{
 
     async createNewUser(req, res) {
        try {
-            const userData = req.body;
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                req.session.message = {
-                    msg: JSON.stringify(errors.array()[0].msg)
-                }
-                return res.redirect('/auth/register')
-            }
-            const user = await userModel.createNewOne(userData);
+        const userData = req.body;
+        const {login, email, password} = userData;
 
-            if(user){
-                res.redirect('/auth/login')
-            } else {
-                res.redirect('/auth/register')
+            if(login && email && password) {
+
+                const hashedPassword = await bcrypt.hash(password, 10)
+                const uniqueID = new mongoose.Types.ObjectId()
+
+                const User = new userModel({
+                    _id: uniqueID,
+                    login,
+                    email: email.toLowerCase(),
+                    password: hashedPassword
+                })
+
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    req.session.message = {
+                        msg: JSON.stringify(errors.array()[0].msg)
+                    }
+                    return res.redirect('/auth/register')
+                }
+                const newUser = await User.save();
+
+                if(newUser){
+                    res.redirect('/auth/login')
+                } else {
+                    res.redirect('/auth/register')
+                }
             }
-       } catch (error) {
+        } catch (error) {
            console.log(error)
        }
     }

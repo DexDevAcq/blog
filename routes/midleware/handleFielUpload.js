@@ -1,5 +1,4 @@
 const multer = require('multer');
-const articleModel = require('../../models/Article');
 
 
 const fileStorageEngine = multer.diskStorage({

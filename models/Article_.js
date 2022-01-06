@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const Article = Schema({
+const Article = new Schema({
 
     ownId: {type: String},
     title: {type: String},
@@ -15,4 +15,11 @@ const Article = Schema({
 });
 
 
-module.exports = mongoose.model('Article', Article, 'articles');
+const model = mongoose.model('Article', Article, 'articles');
+
+module.exports = {
+    articleModel_: model,
+    filterMeth: _filterByTagName = (array, tag) => {
+        return array.filter(article => article.tags.some(currentTag => currentTag === tag));
+    }
+}
