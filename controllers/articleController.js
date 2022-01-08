@@ -1,6 +1,6 @@
 const {validationResult} = require('express-validator');
 
-const {articleModel_, filterMeth}  = require('../models/Article_');
+const {articleModel_}  = require('../models/Article_');
 
 class postController{
 
@@ -9,8 +9,7 @@ class postController{
 
             const page = req.query.page || 1;
             const limit = req.query.limit || 3;
-            // const allArticles = await articleModel.getAllData();
-            const allArticles = await articleModel_.find({}).populate('author');
+            const allArticles = await articleModel_.find({}).populate('authorId');
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
             const articles = allArticles.slice(startIndex, endIndex)
@@ -31,12 +30,11 @@ class postController{
             const tag = req.params.tag;
             const page = req.query.page || 1;
             const limit = req.query.limit || 3;
-            // const allArticles = await articleModel.getAllData();
-            const allArticles = await articleModel_.find({}).populate('author')
-            const filteredArticlesByTagName = filterMeth(allArticles, tag);
+            const filteredArticlesByTagName = await articleModel_.find({tags: tag}).populate('authorId');
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
             const articles = filteredArticlesByTagName.slice(startIndex, endIndex)
+            console.log(articles);
 
             try {
                 return res.render('articles', {articles, pagination: { page, limit, totalRows: filteredArticlesByTagName.length, queryParams: {limit: 3} },
@@ -52,7 +50,7 @@ class postController{
 
    async getSingleArticle(req, res) {
             const articleId = req.params.id
-            const singleArticle = await articleModel_.findOne({ownId: articleId}).populate('author')
+            const singleArticle = await articleModel_.findOne({ownId: articleId}).populate('authorId')
             try {
                return res.render('single-article', {article: singleArticle, login: req.user.login, email: req.user.email})
             } catch (error) {
@@ -71,7 +69,7 @@ class postController{
             ownId: req.uniqueID,
             title: articleData.title,
             description: articleData.description,
-            author: req.user._id,  
+            authorId: req.user._id,  
             creationDate: new Date(),
             tags: !!articleData.tags.split(',')[0] ? [...articleData.tags.split(',')] : [],
             imgExists: req.file ? true : false
@@ -86,7 +84,6 @@ class postController{
             }
             return res.redirect('/articles/new')
         }
-        // articleModel.createNewOne(articleData, req.file, req.user, req.uniqueID)
         await Article.save()
         res.redirect('/articles')
     }
